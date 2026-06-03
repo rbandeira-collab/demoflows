@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RadNet Phone Demo Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0B2545;
+    --blue: #1B5299;
+    --sky: #4A90D9;
+    --teal: #00A896;
+    --cream: #F8F4EF;
+    --warm-white: #FDFAF7;
+    --slate: #4A5568;
+    --light-gray: #EEF2F7;
+    --green: #1A9E6E;
+    --red: #C0392B;
+    --amber: #D97706;
+    --border: #D6E4F0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--navy);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--navy);
+    padding: 48px 60px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    background: rgba(74,144,217,0.12);
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: 40%;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(0,168,150,0.08);
+  }
+  .header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0,168,150,0.18);
+    border: 1px solid rgba(0,168,150,0.35);
+    color: #5DD6C8;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+  .header-badge::before { content: '◉'; font-size: 9px; }
+  .header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(28px, 4vw, 46px);
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: 12px;
+    position: relative;
+    z-index: 1;
+  }
+  .header h1 em {
+    font-style: italic;
+    color: #5DD6C8;
+  }
+  .header-subtitle {
+    color: rgba(255,255,255,0.6);
+    font-size: 15px;
+    font-weight: 300;
+    max-width: 560px;
+    line-height: 1.6;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* PHONE NUMBER HERO */
+  .phone-hero {
+    background: linear-gradient(135deg, var(--blue) 0%, var(--sky) 100%);
+    margin: 0;
+    padding: 28px 60px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .phone-label {
+    color: rgba(255,255,255,0.75);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+  }
+  .phone-number {
+    font-family: 'DM Serif Display', serif;
+    font-size: 34px;
+    color: #fff;
+    letter-spacing: 1px;
+  }
+  .phone-divider {
+    width: 1px; height: 36px;
+    background: rgba(255,255,255,0.3);
+  }
+  .phone-note {
+    color: rgba(255,255,255,0.65);
+    font-size: 13px;
+    font-weight: 300;
+  }
+
+  /* MAIN LAYOUT */
+  .main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 48px 40px 80px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+  }
+
+  /* SECTION CARDS */
+  .card {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(11,37,69,0.06);
+  }
+  .card.full-width { grid-column: 1 / -1; }
+
+  .card-header {
+    padding: 20px 28px 16px;
+    border-bottom: 1px solid var(--light-gray);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .card-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px;
+    flex-shrink: 0;
+  }
+  .card-icon.blue { background: #EBF3FC; }
+  .card-icon.teal { background: #E6F7F5; }
+  .card-icon.green { background: #E6F5EF; }
+  .card-icon.red { background: #FDECEA; }
+  .card-icon.amber { background: #FEF3E2; }
+  .card-icon.navy { background: #E8EDF5; }
+
+  .card-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 17px;
+    color: var(--navy);
+    line-height: 1.2;
+  }
+  .card-body { padding: 20px 28px 24px; }
+
+  /* WHAT IS DEMO */
+  .demo-desc {
+    font-size: 14px;
+    color: var(--slate);
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  /* TOPIC GROUPS */
+  .topic-group { margin-bottom: 22px; }
+  .topic-group:last-child { margin-bottom: 0; }
+  .topic-label {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 1.3px;
+    text-transform: uppercase;
+    color: var(--sky);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .topic-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--light-gray);
+  }
+  .question-list { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+  .question-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 13.5px;
+    color: var(--slate);
+    line-height: 1.5;
+    font-weight: 400;
+  }
+  .question-list li::before {
+    content: '→';
+    color: var(--sky);
+    font-size: 12px;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  /* CANNOT DO */
+  .cannot-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .cannot-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 13.5px;
+    color: var(--slate);
+    line-height: 1.5;
+  }
+  .cannot-list li::before {
+    content: '✕';
+    color: var(--red);
+    font-size: 11px;
+    font-weight: 700;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  /* FLOW STEPS */
+  .flow-steps { display: flex; flex-direction: column; gap: 0; }
+  .flow-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    position: relative;
+  }
+  .flow-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 16px;
+    top: 36px;
+    bottom: -12px;
+    width: 2px;
+    background: var(--light-gray);
+  }
+  .step-num {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--navy);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .step-content {
+    padding-bottom: 20px;
+    flex: 1;
+  }
+  .step-title {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 3px;
+  }
+  .step-desc {
+    font-size: 12.5px;
+    color: var(--slate);
+    line-height: 1.55;
+    font-weight: 300;
+  }
+
+  /* TIPS */
+  .tip-box {
+    background: linear-gradient(135deg, #EBF7F5 0%, #E8F3FC 100%);
+    border: 1px solid #C0E4DE;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-top: 8px;
+  }
+  .tip-box-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 8px;
+  }
+  .tip-box p {
+    font-size: 13px;
+    color: var(--slate);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  /* FOOTER */
+  .footer {
+    border-top: 1px solid var(--border);
+    padding: 24px 60px;
+    background: var(--warm-white);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .footer-note {
+    font-size: 12px;
+    color: #94A3B8;
+    font-weight: 300;
+  }
+  .footer-brand {
+    font-family: 'DM Serif Display', serif;
+    font-size: 14px;
+    color: var(--navy);
+    opacity: 0.5;
+  }
+
+  @media (max-width: 768px) {
+    .header, .phone-hero, .footer { padding-left: 24px; padding-right: 24px; }
+    .main { grid-template-columns: 1fr; padding: 28px 20px 60px; }
+    .card.full-width { grid-column: 1; }
+    .phone-divider { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-badge">AI Voice Demo · RadNet</div>
+  <h1>Radiology Imaging Associates &amp;<br><em>Radiology Regional</em> Phone Demo</h1>
+  <p class="header-subtitle">A voice-powered AI assistant your team can call to explore how the demo handles patient questions about services, FAQs, and Florida imaging center locations.</p>
+</header>
+
+<div class="phone-hero">
+  <div>
+    <div class="phone-label">Demo Phone Number</div>
+    <div class="phone-number">TBD</div>
+  </div>
+  <div class="phone-divider"></div>
+  <div class="phone-note">Call this number to interact with the AI assistant.<br>No appointment or scheduling is connected to this demo.</div>
+</div>
+
+<main class="main">
+
+  <!-- WHAT THE DEMO IS -->
+  <div class="card full-width">
+    <div class="card-header">
+      <div class="card-icon navy">🎙️</div>
+      <div class="card-title">What the Demo Is</div>
+    </div>
+    <div class="card-body">
+      <p class="demo-desc">
+        A phone-in voice demo that allows your team to call and ask questions about <strong>Radiology Imaging Associates</strong> and <strong>Radiology Regional</strong> — two RadNet-affiliated imaging groups serving Florida. The AI assistant answers based on FAQ content covering patient policies, payments, exams, and enhanced breast cancer detection, as well as specific address and contact information for all <strong>18 Florida imaging center locations</strong> (5 RIA + 13 Radiology Regional).
+      </p>
+    </div>
+  </div>
+
+  <!-- WHAT THEY CAN DO -->
+  <div class="card" style="grid-column: 1 / -1;">
+    <div class="card-header">
+      <div class="card-icon green">✓</div>
+      <div class="card-title">What a Caller Can Ask</div>
+    </div>
+    <div class="card-body">
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 32px; flex-wrap: wrap;">
+
+        <div>
+          <div class="topic-group">
+            <div class="topic-label">Referrals &amp; Orders</div>
+            <ul class="question-list">
+              <li>Whether a doctor's referral or script is required</li>
+              <li>Whether an order from a different imaging center is accepted</li>
+              <li>What exams don't need a referral</li>
+            </ul>
+          </div>
+          <div class="topic-group">
+            <div class="topic-label">Exam Preparation</div>
+            <ul class="question-list">
+              <li>How to prepare for an upcoming exam</li>
+              <li>What happens if fasting instructions were not followed</li>
+              <li>How to receive appointment prep information</li>
+            </ul>
+          </div>
+          <div class="topic-group">
+            <div class="topic-label">X-ray Walk-ins</div>
+            <ul class="question-list">
+              <li>Whether X-rays require an appointment</li>
+              <li>Where to find walk-in X-ray hours</li>
+            </ul>
+          </div>
+        </div>
+
+        <div>
+          <div class="topic-group">
+            <div class="topic-label">Reports &amp; Records</div>
+            <ul class="question-list">
+              <li>How to access medical records and reports</li>
+              <li>How to get printed copies of images</li>
+              <li>Whether results can be shared over the phone</li>
+              <li>How long it takes for a doctor to receive results</li>
+            </ul>
+          </div>
+          <div class="topic-group">
+            <div class="topic-label">Cost, Payment &amp; Insurance</div>
+            <ul class="question-list">
+              <li>Which insurance plans are accepted</li>
+              <li>How to estimate out-of-pocket costs</li>
+              <li>Accepted payment methods and credit card fees</li>
+              <li>Whether payment plans are available</li>
+              <li>How to pay a bill online</li>
+              <li>Who is responsible for pre-authorization</li>
+            </ul>
+          </div>
+        </div>
+
+        <div>
+          <div class="topic-group">
+            <div class="topic-label">Exam-Related Questions</div>
+            <ul class="question-list">
+              <li>Whether a female technologist can be requested</li>
+              <li>What exams are always performed by female technologists</li>
+            </ul>
+          </div>
+          <div class="topic-group">
+            <div class="topic-label">Enhanced Breast Cancer Detection</div>
+            <ul class="question-list">
+              <li>Whether EBCD produces a separate report</li>
+              <li>Where EBCD centers are located</li>
+              <li>The cost to add EBCD to a mammogram</li>
+              <li>Whether insurance covers EBCD</li>
+            </ul>
+          </div>
+          <div class="topic-group">
+            <div class="topic-label">General &amp; Policies</div>
+            <ul class="question-list">
+              <li>Current masking policy</li>
+              <li>Whether guests or children are allowed</li>
+              <li>How to request a school or work note</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+
+      <div style="margin-top: 28px; border-top: 1px solid var(--light-gray); padding-top: 24px;">
+        <div class="topic-label">Florida Location Questions</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 4px;">
+          <ul class="question-list">
+            <li>Find the nearest RIA or Radiology Regional location by city or area</li>
+            <li>Get the full address and phone number for a specific center</li>
+          </ul>
+          <ul class="question-list">
+            <li>Ask about imaging services available at a specific location</li>
+            <li>Ask about office hours for a specific location</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- WHAT THEY CANNOT DO -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon red">✕</div>
+      <div class="card-title">What a Caller Cannot Do</div>
+    </div>
+    <div class="card-body">
+      <ul class="cannot-list">
+        <li>Ask about locations outside of Florida (other states are not included in this demo)</li>
+        <li>Book or reschedule an appointment through the call (no scheduling system is connected)</li>
+        <li>Ask about specific pricing or exam cost quotes (these vary by location)</li>
+        <li>Make payments or discuss billing details over the call</li>
+        <li>Ask about Radiology Regional locations outside of Southwest Florida</li>
+        <li>Receive personalized medical advice or a diagnosis</li>
+        <li>Speak to a live human agent — this is an AI-only demo</li>
+        <li>Complete an agent transfer (the handoff will be attempted but not connected in the demo)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- HOW THE CALL WORKS -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon blue">📞</div>
+      <div class="card-title">How the Call Works</div>
+    </div>
+    <div class="card-body">
+      <div class="flow-steps">
+        <div class="flow-step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <div class="step-title">Dial the demo number</div>
+            <div class="step-desc">Call the demo phone number listed above to connect to the AI assistant.</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <div class="step-title">Greeting &amp; introduction</div>
+            <div class="step-desc">The assistant welcomes the caller and briefly explains how the demo works.</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <div class="step-title">Ask a question in natural language</div>
+            <div class="step-desc">No special phrasing needed — speak naturally as you would to a patient coordinator.</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <div class="step-title">AI responds from available content</div>
+            <div class="step-desc">Answers are drawn from FAQ data and all 18 Florida location records.</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="step-num">5</div>
+          <div class="step-content">
+            <div class="step-title">Ask follow-up questions freely</div>
+            <div class="step-desc">The conversation is multi-turn — callers can continue asking or switch topics.</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="step-num">6</div>
+          <div class="step-content">
+            <div class="step-title">Out-of-scope questions</div>
+            <div class="step-desc">If the assistant can't answer, it will gracefully attempt to transfer to an agent. The transfer will not complete in the demo environment.</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="step-num">7</div>
+          <div class="step-content">
+            <div class="step-title">End the call</div>
+            <div class="step-desc">Say "goodbye" or simply hang up when finished.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tip-box">
+        <div class="tip-box-label">💡 Testing Tip</div>
+        <p>Try asking about a specific city — for example, <em>"Do you have a location near Cape Coral?"</em> or <em>"What's the address for the Fort Pierce office?"</em> — to see how location lookup works across both imaging groups.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOCATIONS AT A GLANCE -->
+  <div class="card full-width">
+    <div class="card-header">
+      <div class="card-icon teal">📍</div>
+      <div class="card-title">Florida Locations Covered in This Demo</div>
+    </div>
+    <div class="card-body">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px;">
+
+        <div>
+          <div class="topic-label">Radiology Imaging Associates (5 locations)</div>
+          <ul class="question-list">
+            <li><strong>Stuart</strong> — 2398 SE Ocean Blvd, Suite A, Stuart, FL 34996</li>
+            <li><strong>Jupiter</strong> — 1061 East Indiantown Rd, Suite 110, Jupiter, FL 33477</li>
+            <li><strong>Fort Pierce</strong> — 2306 Nebraska Ave., Fort Pierce, FL 34950</li>
+            <li><strong>Port St. Lucie</strong> — 1825 SE Tiffany Ave., Suite 104, Port St. Lucie, FL 34952</li>
+            <li><strong>Tradition</strong> — 11380 SW Village Pkwy, Suite 200, Port St. Lucie, FL 34987</li>
+          </ul>
+          <div style="margin-top: 12px; font-size: 12px; color: var(--slate); font-weight: 300;">
+            Scheduling: (772) 398-2233
+          </div>
+        </div>
+
+        <div>
+          <div class="topic-label">Radiology Regional (13 locations)</div>
+          <ul class="question-list">
+            <li><strong>Port Charlotte</strong> — 18300 Murdock Circle, Unit 101</li>
+            <li><strong>Naples</strong> — 700 Goodlette Rd</li>
+            <li><strong>North Naples</strong> — 1875 Veterans Park Dr, Unit 2101</li>
+            <li><strong>Bonita Springs</strong> — 9776 Bonita Beach Rd SE, Ste 101A</li>
+            <li><strong>Cape Coral (Cay West)</strong> — 1708 Cape Coral Pkwy W, Ste 3</li>
+            <li><strong>Cape Coral (Coralwood)</strong> — 2301 Del Prado Blvd S, Ste 420</li>
+            <li><strong>Cape Coral (Del Prado)</strong> — 805 Del Prado Blvd S</li>
+            <li><strong>Estero</strong> — 10201 Arcos Ave, Ste 101</li>
+            <li><strong>Fort Myers (6100 Winkler)</strong> — 6100 Winkler Rd</li>
+            <li><strong>Fort Myers (6140 Winkler)</strong> — 6140 Winkler Rd</li>
+            <li><strong>Fort Myers (Hope Preserve)</strong> — 14551 Hope Center Loop</li>
+            <li><strong>Lehigh Acres</strong> — 1110 Lee Blvd</li>
+            <li><strong>Center Point / Sarasota</strong> — 6600 University Pkwy, Ste 102</li>
+          </ul>
+          <div style="margin-top: 12px; font-size: 12px; color: var(--slate); font-weight: 300;">
+            Scheduling: (239) 936-4068
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span class="footer-note">This is a demo environment. No real appointments or billing are processed through this call.</span>
+  <span class="footer-brand">RadNet · Florida Imaging Demo</span>
+</footer>
+
+</body>
+</html>
