@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aeroméxico — Guía Demo de Voz</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black:     #080C14;
+    --midnight:  #0D1525;
+    --navy:      #111D35;
+    --card-bg:   #141E33;
+    --card-alt:  #192240;
+    --red:       #E8132A;
+    --red-dim:   #A50E1E;
+    --red-glow:  rgba(232,19,42,0.18);
+    --gold:      #C9A84C;
+    --white:     #F0F4FF;
+    --muted:     rgba(240,244,255,0.5);
+    --faint:     rgba(240,244,255,0.12);
+    --border:    rgba(240,244,255,0.08);
+    --border-hi: rgba(240,244,255,0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--black);
+    color: var(--white);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    position: relative;
+    background: var(--midnight);
+    padding: 0;
+    overflow: hidden;
+    min-height: 340px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero-runway {
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(
+        90deg,
+        transparent 0px,
+        transparent 60px,
+        rgba(232,19,42,0.04) 60px,
+        rgba(232,19,42,0.04) 61px
+      ),
+      repeating-linear-gradient(
+        180deg,
+        transparent 0px,
+        transparent 40px,
+        rgba(240,244,255,0.025) 40px,
+        rgba(240,244,255,0.025) 41px
+      );
+  }
+
+  .hero-glow {
+    position: absolute;
+    top: -120px; left: -80px;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,19,42,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-glow-2 {
+    position: absolute;
+    bottom: -200px; right: -100px;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(17,29,53,0.9) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 32px 60px 0;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--red-glow);
+    border: 1px solid rgba(232,19,42,0.4);
+    color: #FF6070;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 2px;
+  }
+
+  .hero-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--red);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+  }
+
+  .hero-lang {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .hero-body {
+    padding: 28px 60px 48px;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+
+  .hero-title-block { flex: 1; min-width: 280px; }
+
+  .hero-eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 12px;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 5vw, 62px);
+    font-weight: 900;
+    line-height: 1.0;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--red);
+  }
+
+  .hero-subtitle {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--muted);
+    max-width: 480px;
+    line-height: 1.7;
+    margin-top: 14px;
+  }
+
+  /* PHONE STRIP */
+  .phone-strip {
+    background: var(--red);
+    padding: 22px 60px;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    flex-wrap: wrap;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .phone-strip::after {
+    content: '✈';
+    position: absolute;
+    right: 40px;
+    font-size: 80px;
+    opacity: 0.12;
+    color: #fff;
+    transform: rotate(-20deg);
+    pointer-events: none;
+  }
+
+  .phone-strip-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+  }
+
+  .phone-strip-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 1px;
+  }
+
+  .phone-strip-divider {
+    width: 1px; height: 32px;
+    background: rgba(255,255,255,0.3);
+  }
+
+  .phone-strip-note {
+    font-size: 13px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.5;
+  }
+
+  /* ─── MAIN ─── */
+  .main {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 52px 40px 80px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  /* ─── CARDS ─── */
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+    transition: border-color 0.3s;
+  }
+  .card:hover { border-color: var(--border-hi); }
+  .card.full { grid-column: 1 / -1; }
+  .card.accent-left { border-left: 3px solid var(--red); }
+  .card.accent-gold { border-left: 3px solid var(--gold); }
+
+  .card-header {
+    padding: 22px 28px 18px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .card-icon {
+    width: 38px; height: 38px;
+    border-radius: 3px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .ci-red   { background: var(--red-glow); }
+  .ci-gold  { background: rgba(201,168,76,0.15); }
+  .ci-blue  { background: rgba(70,120,220,0.15); }
+  .ci-green { background: rgba(30,180,100,0.12); }
+
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--white);
+  }
+
+  .card-body { padding: 22px 28px 26px; }
+
+  /* ─── WHAT IS ─── */
+  .what-desc {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.75;
+  }
+  .what-desc strong { color: var(--white); font-weight: 500; }
+
+  /* HIGHLIGHT PILL */
+  .highlight-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+  .highlight-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--faint);
+    border: 1px solid var(--border-hi);
+    padding: 8px 16px;
+    border-radius: 2px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--white);
+  }
+  .highlight-pill span { color: var(--red); font-size: 16px; }
+
+  /* ─── SECTION LABEL ─── */
+  .sec-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .sec-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ─── TOPIC COLS ─── */
+  .topic-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 28px;
+  }
+  .topic-group { margin-bottom: 20px; }
+  .topic-group:last-child { margin-bottom: 0; }
+
+  .q-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .q-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 13.5px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .q-list li::before {
+    content: '—';
+    color: var(--red);
+    font-size: 12px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* FLIGHT SEARCH SPECIAL */
+  .flight-search-card {
+    background: linear-gradient(135deg, var(--card-bg) 0%, #1A2A4A 100%);
+    border: 1px solid rgba(201,168,76,0.2);
+  }
+
+  .flight-feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .flight-feature:last-child { border-bottom: none; padding-bottom: 0; }
+
+  .ff-icon {
+    width: 32px; height: 32px;
+    background: rgba(201,168,76,0.12);
+    border-radius: 3px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .ff-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+  .ff-desc {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+
+  /* ─── CANNOT DO ─── */
+  .cannot-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .cannot-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 13.5px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.5;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .cannot-list li:last-child { border-bottom: none; padding-bottom: 0; }
+  .x-mark {
+    width: 20px; height: 20px;
+    background: rgba(232,19,42,0.15);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px;
+    color: var(--red);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* ─── FLOW ─── */
+  .flow { display: flex; flex-direction: column; gap: 0; }
+  .flow-step {
+    display: flex;
+    gap: 16px;
+    position: relative;
+  }
+  .flow-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 14px; top: 30px; bottom: -8px;
+    width: 1px;
+    background: var(--border);
+  }
+  .step-dot {
+    width: 28px; height: 28px;
+    border: 1px solid var(--red);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--red);
+    flex-shrink: 0;
+    background: var(--card-bg);
+    position: relative;
+    z-index: 1;
+  }
+  .step-body { padding-bottom: 20px; flex: 1; }
+  .step-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+  .step-desc {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* TIP */
+  .tip {
+    margin-top: 16px;
+    background: rgba(201,168,76,0.07);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 3px;
+    padding: 14px 18px;
+  }
+  .tip-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+  .tip p {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .tip em { color: var(--white); font-style: normal; }
+
+  /* ─── FOOTER ─── */
+  .footer {
+    border-top: 1px solid var(--border);
+    background: var(--midnight);
+    padding: 24px 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .footer-note {
+    font-size: 12px;
+    font-weight: 300;
+    color: rgba(240,244,255,0.3);
+  }
+  .footer-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    font-style: italic;
+    color: rgba(240,244,255,0.25);
+  }
+
+  @media (max-width: 800px) {
+    .hero-top, .hero-body, .phone-strip, .footer { padding-left: 24px; padding-right: 24px; }
+    .main { grid-template-columns: 1fr; padding: 28px 20px 60px; }
+    .card.full { grid-column: 1; }
+    .topic-grid { grid-template-columns: 1fr; }
+    .phone-strip-divider { display: none; }
+    .phone-strip::after { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-runway"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow-2"></div>
+
+  <div class="hero-top">
+    <div class="hero-badge">Demo de Voz con IA · En Vivo</div>
+    <div class="hero-lang">ES · Demo Guide</div>
+  </div>
+
+  <div class="hero-body">
+    <div class="hero-title-block">
+      <div class="hero-eyebrow">Asistente de Voz Inteligente</div>
+      <h1 class="hero-title">Aeroméxico<br><em>Phone Demo</em></h1>
+      <p class="hero-subtitle">
+        Un asistente de voz con IA que responde preguntas de pasajeros en tiempo real — desde tarifas y equipaje hasta búsqueda de vuelos disponibles vía Google Flights.
+      </p>
+    </div>
+  </div>
+</header>
+
+<!-- PHONE STRIP -->
+<div class="phone-strip">
+  <div>
+    <div class="phone-strip-label">Número de Demo</div>
+    <div class="phone-strip-number">+52 800 461 1196</div>
+  </div>
+  <div class="phone-strip-divider"></div>
+  <div class="phone-strip-note">
+    Llama a este número para interactuar con el asistente de IA.<br>
+    No se realizan reservas ni cobros reales en este demo.
+  </div>
+</div>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- WHAT IS -->
+  <div class="card full accent-left">
+    <div class="card-header">
+      <div class="card-icon ci-red">🎙️</div>
+      <div class="card-title">¿Qué es este Demo?</div>
+    </div>
+    <div class="card-body">
+      <p class="what-desc">
+        Un demo de voz telefónica que permite a tu equipo llamar al número de arriba y hacer preguntas sobre <strong>Aeroméxico</strong> como si fueran pasajeros reales. El asistente responde en lenguaje natural basándose en la base de conocimiento oficial — incluyendo tarifas, equipaje, check-in, menores, mascotas, servicios especiales y el programa <strong>Aeroméxico Rewards</strong>. Además, está conectado a <strong>Google Flights API</strong> para buscar opciones de vuelo en tiempo real.
+      </p>
+      <div class="highlight-row">
+        <div class="highlight-pill"><span>📋</span> Base de Conocimiento FAQ</div>
+        <div class="highlight-pill"><span>✈️</span> Búsqueda de Vuelos en Tiempo Real</div>
+        <div class="highlight-pill"><span>🇲🇽</span> Español · 24/7</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHAT THEY CAN DO -->
+  <div class="card full">
+    <div class="card-header">
+      <div class="card-icon ci-green">✓</div>
+      <div class="card-title">Lo que un Llamante Puede Hacer</div>
+    </div>
+    <div class="card-body">
+      <div class="topic-grid">
+
+        <!-- COL 1 -->
+        <div>
+          <div class="topic-group">
+            <div class="sec-label">Reservas & Boletos</div>
+            <ul class="q-list">
+              <li>Dónde y cómo comprar un boleto</li>
+              <li>Cómo apartar una tarifa por 24 horas</li>
+              <li>Cómo hacer una reservación en grupo (9+ pasajeros)</li>
+              <li>Cuánto tiempo tiene para usar su boleto</li>
+              <li>Qué hacer con un boleto vencido</li>
+              <li>Ayuda paso a paso para reservar en línea</li>
+              <li>Qué tipos de aviones opera Aeroméxico</li>
+            </ul>
+          </div>
+          <div class="topic-group">
+            <div class="sec-label">Rutas & Destinos</div>
+            <ul class="q-list">
+              <li>A qué destinos vuela Aeroméxico</li>
+              <li>Por qué no aparecen vuelos al cotizar</li>
+              <li>Restricciones de viaje por destino</li>
+            </ul>
+          </div>
+          <div class="topic-group">
+            <div class="sec-label">Tarifas</div>
+            <ul class="q-list">
+              <li>Diferencia entre tarifas Básica, Clásica, AM Plus y Premier</li>
+              <li>Qué incluye cada tarifa (asiento, equipaje)</li>
+              <li>Beneficios de agregar Flexibilidad a su tarifa</li>
+              <li>Cómo consultar los detalles de su tarifa actual</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- COL 2 -->
+        <div>
+          <div class="topic-group">
+            <div class="sec-label">Equipaje</div>
+            <ul class="q-list">
+              <li>Tipos de equipaje: personal, mano y documentado</li>
+              <li>Dimensiones y peso máximo permitidos</li>
+              <li>Qué incluye su tarifa en materia de equipaje</li>
+              <li>Cómo agregar equipaje extra o deportivo</li>
+              <li>Cómo rastrear o reportar equipaje perdido</li>
+              <li>Equipaje para infantes y menores</li>
+              <li>Artículos médicos y medicamentos permitidos</li>
+            </ul>
+          </div>
+          <div class="topic-group">
+            <div class="sec-label">Asientos & Upgrade</div>
+            <ul class="q-list">
+              <li>Tipos de asientos disponibles (Premier One, AM Plus, AMXL, etc.)</li>
+              <li>Cómo seleccionar o cambiar un asiento</li>
+              <li>Asientos para personas con discapacidad, embarazadas o con infantes</li>
+              <li>Cómo participar en subasta de Upgrade</li>
+              <li>Qué incluye hacer Upgrade a Clase Premier</li>
+              <li>Cómo funciona la lista de Upgrade por nivel</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- COL 3 -->
+        <div>
+          <div class="topic-group">
+            <div class="sec-label">Aeroméxico Rewards</div>
+            <ul class="q-list">
+              <li>Qué es Aeroméxico Rewards (ex Club Premier)</li>
+              <li>Cómo inscribirse al programa</li>
+              <li>Cómo acumular y usar puntos</li>
+              <li>Cuánto vale un Punto Rewards</li>
+              <li>Cómo pagar vuelos y complementos con puntos</li>
+              <li>Programas de lealtad afiliados aceptados</li>
+              <li>Tarjetas bancarias Aeroméxico (Santander y AmEx)</li>
+            </ul>
+          </div>
+          <div class="topic-group">
+            <div class="sec-label">Check-in & Mi Vuelo</div>
+            <ul class="q-list">
+              <li>Cuándo y cómo hacer Check-in</li>
+              <li>Cómo imprimir o usar pase de abordar digital</li>
+              <li>Con cuánto tiempo llegar al aeropuerto</li>
+              <li>Cómo hacer Check-in en quiosco</li>
+              <li>Cómo consultar itinerario y estatus del vuelo</li>
+              <li>Opciones si cancelaron su vuelo</li>
+            </ul>
+          </div>
+          <div class="topic-group">
+            <div class="sec-label">Otros Temas</div>
+            <ul class="q-list">
+              <li>Mascotas: a bordo, documentadas, de servicio o apoyo emocional</li>
+              <li>Menores sin acompañante y documentos requeridos</li>
+              <li>Servicios especiales (silla de ruedas, oxígeno, etc.)</li>
+              <li>Reembolsos: elegibilidad, tiempos y métodos</li>
+              <li>Extras de viaje disponibles (seguros, Salón Premier, eSIM, etc.)</li>
+              <li>Requisitos migratorios y documentos de viaje</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- FLIGHT SEARCH -->
+  <div class="card flight-search-card accent-gold">
+    <div class="card-header">
+      <div class="card-icon ci-gold">🔍</div>
+      <div class="card-title">Búsqueda de Vuelos en Tiempo Real</div>
+    </div>
+    <div class="card-body">
+      <p style="font-size:13.5px; font-weight:300; color:var(--muted); line-height:1.7; margin-bottom:20px;">
+        Este demo está conectado a <strong style="color:var(--white)">Google Flights API</strong>, lo que permite al asistente buscar opciones de vuelo reales al momento de la llamada.
+      </p>
+
+      <div class="flight-feature">
+        <div class="ff-icon">🛫</div>
+        <div>
+          <div class="ff-title">Buscar por origen y destino</div>
+          <div class="ff-desc">El llamante puede pedir vuelos de una ciudad a otra — por ejemplo, "¿Hay vuelos de CDMX a Cancún este fin de semana?"</div>
+        </div>
+      </div>
+      <div class="flight-feature">
+        <div class="ff-icon">📅</div>
+        <div>
+          <div class="ff-title">Buscar por fecha o rango de fechas</div>
+          <div class="ff-desc">El asistente consulta disponibilidad para fechas específicas o rangos flexibles indicados por el llamante.</div>
+        </div>
+      </div>
+      <div class="flight-feature">
+        <div class="ff-icon">👥</div>
+        <div>
+          <div class="ff-title">Especificar número de pasajeros</div>
+          <div class="ff-desc">Se pueden buscar opciones para uno o más pasajeros y el asistente presentará las opciones disponibles.</div>
+        </div>
+      </div>
+      <div class="flight-feature">
+        <div class="ff-icon">💺</div>
+        <div>
+          <div class="ff-title">Filtrar por clase de cabina</div>
+          <div class="ff-desc">El llamante puede solicitar resultados para Turista, AM Plus o Premier según su preferencia.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CANNOT DO -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon ci-red">✕</div>
+      <div class="card-title">Lo que un Llamante NO Puede Hacer</div>
+    </div>
+    <div class="card-body">
+      <ul class="cannot-list">
+        <li><div class="x-mark">✕</div>Reservar o comprar vuelos — el demo solo muestra opciones, no completa compras</li>
+        <li><div class="x-mark">✕</div>Transferir a un agente humano — este demo es 100% IA, no hay transferencia disponible</li>
+        <li><div class="x-mark">✕</div>Realizar pagos, reembolsos o modificaciones a reservas reales</li>
+        <li><div class="x-mark">✕</div>Consultar el saldo específico de puntos Aeroméxico Rewards de una cuenta</li>
+        <li><div class="x-mark">✕</div>Hacer Check-in o emitir pases de abordar reales</li>
+        <li><div class="x-mark">✕</div>Recibir asesoría médica o diagnósticos personalizados</li>
+        <li><div class="x-mark">✕</div>Cotizar o agregar equipaje especial (solo disponible vía Call Center real)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="card full">
+    <div class="card-header">
+      <div class="card-icon ci-blue">📞</div>
+      <div class="card-title">Cómo Funciona la Llamada</div>
+    </div>
+    <div class="card-body" style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+
+      <div class="flow">
+        <div class="flow-step">
+          <div class="step-dot">1</div>
+          <div class="step-body">
+            <div class="step-title">Marcar el número de demo</div>
+            <div class="step-desc">Llamar al +52 800 461 1196 para conectar con el asistente de IA.</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="step-dot">2</div>
+          <div class="step-body">
+            <div class="step-title">Saludo e introducción</div>
+            <div class="step-desc">El asistente da la bienvenida al llamante y explica brevemente lo que puede hacer.</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="step-dot">3</div>
+          <div class="step-body">
+            <div class="step-title">Hacer una pregunta en lenguaje natural</div>
+            <div class="step-desc">No se requiere fraseología especial — se habla con naturalidad como con un agente real.</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="step-dot">4</div>
+          <div class="step-body">
+            <div class="step-title">El asistente responde o busca vuelos</div>
+            <div class="step-desc">Consulta la base de conocimiento o conecta a Google Flights según la pregunta.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flow">
+        <div class="flow-step">
+          <div class="step-dot">5</div>
+          <div class="step-body">
+            <div class="step-title">Preguntas de seguimiento</div>
+            <div class="step-desc">La conversación es multi-turno — el llamante puede continuar o cambiar de tema libremente.</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="step-dot">6</div>
+          <div class="step-body">
+            <div class="step-title">Preguntas fuera de alcance</div>
+            <div class="step-desc">Si el asistente no puede responder, informará al llamante con claridad y sugerirá cómo obtener ayuda real.</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="step-dot">7</div>
+          <div class="step-body">
+            <div class="step-title">Finalizar la llamada</div>
+            <div class="step-desc">Decir "adiós" o simplemente colgar para terminar la sesión.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="padding: 0 28px 26px;">
+      <div class="tip">
+        <div class="tip-label">💡 Sugerencia para Probar</div>
+        <p>Prueba preguntar: <em>"¿Hay vuelos de Ciudad de México a Cancún para el próximo viernes para dos personas en clase turista?"</em> para ver cómo funciona la búsqueda de vuelos en tiempo real con Google Flights.</p>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span class="footer-note">Este es un entorno de demo. No se procesan reservas, pagos ni modificaciones reales a través de esta llamada.</span>
+  <span class="footer-brand">Aeroméxico · Demo de Voz con IA</span>
+</footer>
+
+</body>
+</html>
